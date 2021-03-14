@@ -10,7 +10,6 @@ class ContactUsController {
       'enquiry': message,
     });
     final response = await dio.post('api/collection/contact',data: formData);
-    print(response.data);
     if(response.statusCode == 200)
       return response.data['success'];
     else
