@@ -1,25 +1,51 @@
+import 'package:beauty_treatment_app/moduels/result/model.dart';
+import 'package:beauty_treatment_app/shared/components/loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 
-class ResultScreen extends StatelessWidget {
+import 'controller.dart';
+
+class ResultScreen extends StatefulWidget {
+  final String title;
+  final String id;
+  ResultScreen(this.title,this.id);
+
+  @override
+  _ResultScreenState createState() => _ResultScreenState();
+}
+
+class _ResultScreenState extends State<ResultScreen> {
+  bool _isLoading = true;
+  ResultsModel _resultsModel;
+
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
+  getData()async{
+    _resultsModel = await ResultsController().getResults(widget.id);
+    setState(()=> _isLoading = false);
+  }
   @override
   Widget build(BuildContext context) {
+    print(widget.id);
     return Scaffold(
       appBar: AppBar(
-        title: Text('النتيجه'),
+        title: Text('النتيجة'),
         backgroundColor: HexColor('#f5bebc'),
         centerTitle: true,
         iconTheme: IconThemeData(
           color: Colors.white,
         ),
       ),
-      body: SingleChildScrollView(
+      body: _isLoading ? LoadingIndicator() : SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),
           child: Column(
             children: [
               Center(
-                child: Image.asset('assets/images/res.png',
+                child: Image.network(_resultsModel.categoryImage,
                 width: 100,
                   height: 100,
                 ),
@@ -33,7 +59,7 @@ class ResultScreen extends StatelessWidget {
                 width: double.infinity,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 12),
-                    child: Text('نوع البشره : بشره دهنيه'),
+                    child: Text('نوع البشره : ${_resultsModel.categoryName}'),
                   )),
               SizedBox(height: 10),
               Container(
@@ -48,15 +74,7 @@ class ResultScreen extends StatelessWidget {
                   children: [
                     Center(child: Text('استخدام البيانات التي تحتوي علي ')),
                     SizedBox(height: 10),
-                    Text('نياسيناميد',style: TextStyle(fontSize: 16,color: HexColor('#615f5f')),),
-                    SizedBox(height: 5),
-                    Text('هالورونيك اسيد',style: TextStyle(fontSize: 16,color: HexColor('#615f5f')),),
-                    SizedBox(height: 5),
-                    Text('الزنك',style: TextStyle(fontSize: 16,color: HexColor('#615f5f')),),
-                    SizedBox(height: 5),
-                    Text('بينزول بروكسيد',style: TextStyle(fontSize: 16,color: HexColor('#615f5f')),),
-                    SizedBox(height: 5),
-                    Text('الريتنزول',style: TextStyle(fontSize: 16,color: HexColor('#615f5f')),),
+                    Text(_resultsModel.dataHabits.data,style: TextStyle(fontSize: 16,color: HexColor('#615f5f')),),
                   ],
                 ),
               ),
@@ -73,18 +91,10 @@ class ResultScreen extends StatelessWidget {
                   children: [
                     Center(child: Text('عادات يوميه لبشره مشرقه ')),
                     SizedBox(height: 10),
-                    Text('شرب عن مالايقل عن 2 لتر من الماء',style: TextStyle(fontSize: 16,color: HexColor('#615f5f')),),
-                    SizedBox(height: 5),
-                    Text(' ممارسه التمارين الرياضية',style: TextStyle(fontSize: 16,color: HexColor('#615f5f')),),
-                    SizedBox(height: 5),
-                    Text('تناول افطار غنى بالبروتين',style: TextStyle(fontSize: 16,color: HexColor('#615f5f')),),
-                    SizedBox(height: 5),
-                    Text('تناول فاكهه يويما',style: TextStyle(fontSize: 16,color: HexColor('#615f5f')),),
+                    Text(_resultsModel.dataHabits.habit,style: TextStyle(fontSize: 16,color: HexColor('#615f5f')),),
                   ],
                 ),
               ),
-
-
             ],
           ),
         ),

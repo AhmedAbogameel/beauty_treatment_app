@@ -120,7 +120,7 @@ class _Discover_screenState extends State<Discover_screen> {
                 text: 'عرض النتيجه',
                 function: ()
                   {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => ResultScreen(),));
+                    // Navigator.push(context, MaterialPageRoute(builder: (context) => ResultScreen(),));
                   }
 
               ),
