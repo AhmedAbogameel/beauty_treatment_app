@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:beauty_treatment_app/constants.dart';
+import 'package:beauty_treatment_app/moduels/home/homepage_screen.dart';
 import 'package:beauty_treatment_app/moduels/intro/intro_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -15,7 +17,7 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     Timer(Duration(seconds: 5),()
     {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => introScreen(),));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => currentLoggedUser.isLogged ? HomePageScreen() : introScreen(),));
     });
   }
   Widget build(BuildContext context) {
