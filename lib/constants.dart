@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'core/user_singleton.dart';
 import 'shared/components/toast.dart';
 
-const String BASE_URL = 'https://web2html5.com/m/beautytreatment/index.php?route=';
+const String BASE_URL = 'http://beautytreatment.live/index.php?route=';
 
 Dio dio = Dio()..options.baseUrl = BASE_URL;
 

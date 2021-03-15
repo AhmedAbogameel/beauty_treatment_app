@@ -1,3 +1,4 @@
+import 'package:beauty_treatment_app/constants.dart';
 import 'package:beauty_treatment_app/moduels/result/model.dart';
 import 'package:beauty_treatment_app/shared/components/loading_indicator.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +30,6 @@ class _ResultScreenState extends State<ResultScreen> {
   }
   @override
   Widget build(BuildContext context) {
-    print(widget.id);
     return Scaffold(
       appBar: AppBar(
         title: Text('النتيجة'),
@@ -39,7 +39,7 @@ class _ResultScreenState extends State<ResultScreen> {
           color: Colors.white,
         ),
       ),
-      body: _isLoading ? LoadingIndicator() : SingleChildScrollView(
+      body: _isLoading ? LoadingIndicator() : _resultsModel.categoryImage == null ? Center(child: Text(DefaultErrorMessage),) :  SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),
           child: Column(
