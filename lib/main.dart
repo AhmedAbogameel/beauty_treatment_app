@@ -27,6 +27,8 @@ class MyApp extends StatelessWidget {
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
         home:SplashScreen(),
+        debugShowCheckedModeBanner: false,
+        title: 'Beauty Treatment',
         onGenerateRoute: onGenerateRoute,
         navigatorKey: navigatorKey,
         builder: (context, child) => SafeArea(child: Directionality(textDirection: TextDirection.rtl, child: child)),
