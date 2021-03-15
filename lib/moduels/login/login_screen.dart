@@ -94,7 +94,7 @@ class LoginScreen extends StatelessWidget {
                               InkWell(
                                 onTap: ()
                                 {
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => resetPassword(),));
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ResetPasswordScreen(),));
                                 },
                                 child: Text('نسيت كلمه المرور',style: TextStyle(
                                     color: HexColor('#f2adab'),fontWeight: FontWeight.w700),),

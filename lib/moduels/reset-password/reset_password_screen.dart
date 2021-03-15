@@ -1,12 +1,22 @@
-import 'package:beauty_treatment_app/moduels/intro/intro_screen.dart';
-import 'package:beauty_treatment_app/moduels/login/login_screen.dart';
-import 'package:beauty_treatment_app/moduels/signup/signup_screen.dart';
-import 'package:beauty_treatment_app/shared/components/components.dart';
+import 'package:beauty_treatment_app/core/router.dart';
+import 'package:beauty_treatment_app/core/validation.dart';
+import 'package:beauty_treatment_app/moduels/reset-password/controller.dart';
+import 'package:beauty_treatment_app/shared/components/loading_indicator.dart';
+import 'package:beauty_treatment_app/shared/components/toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 
-class resetPassword extends StatelessWidget {
+class ResetPasswordScreen extends StatefulWidget {
+  @override
+  _ResetPasswordScreenState createState() => _ResetPasswordScreenState();
+}
+
+class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
+  bool _isLoading = false;
+  final GlobalKey<FormState> key = GlobalKey<FormState>();
+  TextEditingController email = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,27 +31,32 @@ class resetPassword extends StatelessWidget {
                 )),
             Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: TextFormField(
-                    textAlign: TextAlign.right,
-                    decoration: InputDecoration(
-                      hintText: 'رقم الجوال أو البريد الاكتروني',
-                      contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(
-                          color: Colors.transparent,
-                          width: 1.0,
+                Form(
+                  key: key,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: TextFormField(
+                      textAlign: TextAlign.right,
+                      decoration: InputDecoration(
+                        hintText: 'رقم الجوال أو البريد الاكتروني',
+                        contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: BorderSide(
+                            color: Colors.transparent,
+                            width: 1.0,
+                          ),
                         ),
+                        fillColor: HexColor('#ebebeb'),
+                        filled: true,
                       ),
-                      fillColor: HexColor('#ebebeb'),
-                      filled: true,
+                      validator: Validations.email,
+                      controller: email,
                     ),
                   ),
                 ),
                 SizedBox(height: 5),
-                Padding(
+                _isLoading ? LoadingIndicator() : Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   child: Container(
                     width: double.infinity,
@@ -51,9 +66,13 @@ class resetPassword extends StatelessWidget {
                       ),
                       elevation: 2,
                       padding: EdgeInsets.all(12),
-                      onPressed: ()
-                      {
-                        Navigator.push(context, MaterialPageRoute(builder:(context) => SignUp(),));
+                      onPressed: ()async{
+                        if(!key.currentState.validate()) return;
+                        setState(()=> _isLoading = true);
+                        final message = await ResetPasswordController().reset(email.text);
+                        email.clear();
+                        showToast(message,top: true);
+                        setState(()=> _isLoading = false);
                       },
                       child: Text(
                         'استرجاع كلمه المرور',
@@ -70,10 +89,7 @@ class resetPassword extends StatelessWidget {
             ),
             SizedBox(height: 15),
             InkWell(
-              onTap: ()
-              {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen(),));
-              },
+              onTap: ()=> MagicRouter.pop(),
               child: Text('رجوع',style: TextStyle(
                   color: HexColor('#f2adab'),fontWeight: FontWeight.bold),),
             ),
