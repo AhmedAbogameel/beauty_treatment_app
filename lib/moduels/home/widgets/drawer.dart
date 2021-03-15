@@ -1,6 +1,7 @@
 import 'package:beauty_treatment_app/core/router.dart';
 import 'package:beauty_treatment_app/core/shared_helper.dart';
 import 'package:beauty_treatment_app/moduels/home/cubit/cubit.dart';
+import 'package:beauty_treatment_app/moduels/information/view.dart';
 import 'package:beauty_treatment_app/moduels/intro/intro_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -57,11 +58,18 @@ class HomeDrawer extends StatelessWidget {
               HomeCubit.get(context).changeIndex(1);
             },
           ),
-          // ListTile(
-          //   contentPadding: EdgeInsets.symmetric(horizontal: 10),
-          //   leading: Icon(Icons.flaky_rounded,color: HexColor('#f5bebc'),),
-          //   title: Text(' الاسئله الشائعه'),
-          // ),
+          ListTile(
+            contentPadding: EdgeInsets.symmetric(horizontal: 10),
+            leading: Icon(Icons.block,color: HexColor('#f5bebc'),),
+            title: Text('سياسة الاستخدام'),
+            onTap: ()=> MagicRouter.navigateTo(InformationScreen('3')),
+          ),
+          ListTile(
+            contentPadding: EdgeInsets.symmetric(horizontal: 10),
+            leading: Icon(Icons.question_answer_outlined,color: HexColor('#f5bebc'),),
+            title: Text('الاسئلة الشائعة'),
+            onTap: ()=> MagicRouter.navigateTo(InformationScreen('5')),
+          ),
           ListTile(
             contentPadding: EdgeInsets.symmetric(horizontal: 10),
             leading: Icon(Icons.logout,color: HexColor('#f5bebc'),),
