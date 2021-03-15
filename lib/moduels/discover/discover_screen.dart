@@ -1,5 +1,8 @@
 import 'package:beauty_treatment_app/moduels/result/result_screen.dart';
+import 'package:beauty_treatment_app/moduels/skin-types/controller.dart';
+import 'package:beauty_treatment_app/moduels/skin-types/model.dart';
 import 'package:beauty_treatment_app/shared/components/components.dart';
+import 'package:beauty_treatment_app/shared/components/loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'dart:io';
@@ -13,7 +16,8 @@ class Discover_screen extends StatefulWidget {
 
 class _Discover_screenState extends State<Discover_screen> {
 
-  String valueChoose;
+  var valueChoose;
+  String categoryId;
   List listItem = [
     "بشره مختلطه", "بشره جافه","بشره دهنيه","بشره عاديه"
   ];
@@ -30,6 +34,18 @@ class _Discover_screenState extends State<Discover_screen> {
       images.add(_image);
     });
   }
+
+  initState(){
+    getData();
+    super.initState();
+  }
+
+  bool _isLoading = true;
+  SkinTypesModel _skinTypesModel;
+  getData()async{
+    _skinTypesModel = await SkinTypesController().getData();
+    setState(()=> _isLoading = false);
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,7 +57,7 @@ class _Discover_screenState extends State<Discover_screen> {
           color: Colors.white,
         ),
       ),
-      body: Padding(
+      body: _isLoading ? LoadingIndicator() : Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),
         child: Column(
           children: [
@@ -98,17 +114,18 @@ class _Discover_screenState extends State<Discover_screen> {
                   icon: Icon(Icons.arrow_drop_down),
                   iconSize: 28,
                   value: valueChoose,
-                  onChanged: (newvalue)
+                  onChanged: (value)
                   {
                     setState(() {
-                      valueChoose = newvalue;
+                      valueChoose = value;
+                      categoryId = value.categoryId;
                     });
                   },
-                  items: listItem.map((valueItem)
+                  items: _skinTypesModel.categories.map((item)
                   {
                     return DropdownMenuItem(
-                      value: valueItem,
-                      child: Text(valueItem),
+                      value: item,
+                      child: Text(item.categoryName),
                     );
                   }).toList()
               ),
@@ -118,15 +135,10 @@ class _Discover_screenState extends State<Discover_screen> {
               width: double.infinity,
               child: DefaultButton(
                 text: 'عرض النتيجه',
-                function: ()
-                  {
-                    // Navigator.push(context, MaterialPageRoute(builder: (context) => ResultScreen(),));
-                  }
-
+                function: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ResultScreen(valueChoose.categoryName,categoryId),))
               ),
             ),
             SizedBox(height: 20),
-
           ],
         ),
       ),
